@@ -11,9 +11,6 @@ package scalax
 package rules
 package scalasig
 
-import scala.language.postfixOps
-import scala.language.implicitConversions
-
 import ClassFileParser.{ ConstValueIndex, Annotation }
 import scala.reflect.internal.pickling.ByteCodecs
 

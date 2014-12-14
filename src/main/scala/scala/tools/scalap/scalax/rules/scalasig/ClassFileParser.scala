@@ -3,8 +3,6 @@ package scalax
 package rules
 package scalasig
 
-import language.postfixOps
-
 import java.io.IOException
 
 object ByteCode {

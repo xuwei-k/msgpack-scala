@@ -14,8 +14,6 @@ package scala.tools.scalap
 package scalax
 package rules
 
-import language.postfixOps
-
 /**
  * A workaround for the difficulties of dealing with
  * a contravariant 'In' parameter type...
