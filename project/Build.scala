@@ -32,7 +32,7 @@ object MessagePackScalaBuild extends Build {
   )
 
   lazy val dependsOnScalaVersion = (scalaVersion) { v => {
-    val specs = v match{
+    v match{
       case "2.9.3"  => "org.specs2" %% "specs2" % "1.12.4.1" % "test"
       case "2.9.2"  => "org.specs2" %% "specs2" % "1.12.3" % "test"
       case "2.9.1-1" => "org.specs2" %% "specs2" % "1.12.3" % "test"
@@ -43,12 +43,6 @@ object MessagePackScalaBuild extends Build {
       case x if x.startsWith("2.11") => "org.specs2" %% "specs2" % "2.4.1" % "test"
       case _ => "org.specs2" %% "specs2" % "1.8.2" % "test"
     }
-    val reflection = v match{
-      case x if x.startsWith("2.10") => List("org.scala-lang" % "scalap" % v)
-      case x if x.startsWith("2.11") => List("org.scala-lang" % "scalap" % v)//List("org.scala-lang" % "scala-reflect" % v)
-      case v => List("org.scala-lang" % "scalap" % v)
-    }
-    specs :: reflection
   }}
   
   
@@ -57,7 +51,7 @@ object MessagePackScalaBuild extends Build {
                           settings = Project.defaultSettings ++ SbtIdeaPlugin.settings ++ sonatypeSettings ++ Seq(
                             libraryDependencies ++= dependencies,
                             libraryDependencies ++= dependenciesForTest,
-                            libraryDependencies <++= dependsOnScalaVersion,
+                            libraryDependencies <+= dependsOnScalaVersion,
                             publishMavenStyle := true,
                             publishArtifact in Test := false,
                             /*publishTo <<= version { (v: String) =>
