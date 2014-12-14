@@ -27,6 +27,18 @@ object ByteCode {
       in.close()
     }
   }
+
+  private[this] val UTF8CharSet = java.nio.charset.Charset forName "UTF-8"
+
+  /** [[https://github.com/scala/scala/blob/v2.11.4/src/library/scala/io/Codec.scala#L101-L108]] */
+  private def fromUTF8(bytes: Array[Byte], offset: Int, len: Int): Array[Char] = {
+    val bbuffer = java.nio.ByteBuffer.wrap(bytes, offset, len)
+    val cbuffer = UTF8CharSet decode bbuffer
+    val chars   = new Array[Char](cbuffer.remaining())
+    cbuffer get chars
+
+    chars
+  }
 }
 
 /** Represents a chunk of raw bytecode.  Used as input for the parsers
@@ -63,7 +75,7 @@ class ByteCode(val bytes: Array[Byte], val pos: Int, val length: Int) {
   def fromUTF8StringAndBytes = {
     val chunk: Array[Byte] = new Array[Byte](length)
     System.arraycopy(bytes, pos, chunk, 0, length)
-    val str = new String(io.Codec.fromUTF8(bytes, pos, length))
+    val str = new String(ByteCode.fromUTF8(bytes, pos, length))
 
     StringBytesPair(str, chunk)
   }
